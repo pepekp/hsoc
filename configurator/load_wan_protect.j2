@@ -1,0 +1,35 @@
+{% if key == 1 %}
+policy-options {
+    prefix-list ntp {
+        {% for line in ip -%}
+        {{ line[:] }};
+        {% endfor -%}
+    }
+}
+
+{% elif key == 2 %}
+    prefix-list dns {
+        {% for item in ip -%}
+        {{ item }};
+        {% endfor -%}
+    }
+    {% elif key == 3 %}
+    prefix-list memcached {
+        {% for item in ip -%}
+        {{ item }};
+        {% endfor -%}
+
+    }
+    {% else %}
+    pass
+
+    policy-statement ExOSPF {
+        from protocol [ local direct ];
+        then accept;
+    }
+    inactive: policy-statement statics {
+        from protocol static;
+        then accept;
+    }
+}
+{% endif %}

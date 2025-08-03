@@ -1,0 +1,33 @@
+
+--- JUNOS 12.1X44-D40.2 built 2014-08-28 12:20:14 UTC
+pepe@Seasound> 
+
+pepe@Seasound> 
+
+pepe@Seasound> set cli screen-width 511 
+Screen width set to 511
+
+pepe@Seasound> set cli complete-on-space off 
+Disabling complete-on-space
+
+pepe@Seasound> set cli screen-length 0 
+
+Screen length set to 0
+
+pepe@Seasound> 
+
+pepe@Seasound> 
+
+pepe@Seasound> configure private 
+warning: uncommitted changes will be discarded on exit
+Entering configuration mode
+
+[edit]
+pepe@Seasound# 
+
+[edit]
+pepe@Seasound# 
+
+[edit]
+pepe@Seasound# load set terminal 
+[Type ^D at a new line to end input]
