@@ -36,11 +36,6 @@ def time_period():
     tn = time_now.strftime("%Y-%m-%d %H:%M:%S")
     return [ta, tn] # return list of dates
 
-# time_vars = time_period()
-# time_ago_var = time_vars[0]
-# time_now_var = time_vars[1]
-# print(time_now_var, time_ago_var)
-
 def ntp_db_query(time_ago_var, time_now_var):
     result = client.query(f'SELECT received as "time", in_bytes, proto, src_port, src4_addr FROM siem.netflow WHERE (time >= \'{time_ago_var}\' AND time <= \'{time_now_var}\') AND (proto=\'udp\') AND (src_port=123)')
     # Process query
@@ -64,10 +59,6 @@ def ntp_db_query(time_ago_var, time_now_var):
     print(f"DB query function return: {malicious_ntp}, {bytes_sum}, {count_ntp_host}")
     return malicious_ntp, bytes_sum, count_ntp_host
 
-# db_query_result = ntp_db_query()
-# print(db_query_result[0])
-#ntp_bytes_received = db_query_result[1]
-#count_ntp_hosts = db_query_result[2]
 
 def ntp_event_gen(time_now_var, ntp_bytes_received, count_ntp_hosts, malicious_ntp):
     print('Generate and push event to database')
@@ -83,11 +74,9 @@ def ntp_event_gen(time_now_var, ntp_bytes_received, count_ntp_hosts, malicious_n
         # Jinja2 attack type key
         attack_key = 1 # used by Jinja template to add ip's into the correct prefix list
         # Call configurator to push configuration
-        #import configurator
         junos_config(malicious_ntp, attack_key)
     else:
         print('No malicious NTP traffic')
-#ntp_event_gen()
 
 # Query database for malicious DNS traffic
 
@@ -116,10 +105,6 @@ def dns_db_query(time_ago_var, time_now_var):
     print(f"DB query function return: {malicious_dns}, {bytes_sum}, {count_dns_host}")
     return malicious_dns, bytes_sum, count_dns_host
 
-# db_query_result = db_query()
-# print(db_query_result[0])
-#ntp_bytes_received = db_query_result[1]
-#count_ntp_hosts = db_query_result[2]
 
 def dns_event_gen(time_now_var, dns_bytes_received, count_dns_hosts, malicious_dns):
     if dns_bytes_received > dns_bytes_threshold:
@@ -135,7 +120,7 @@ def dns_event_gen(time_now_var, dns_bytes_received, count_dns_hosts, malicious_d
         # Call configurator to push configuration
         attack_key = 2   # used by Jinja template to add ip's into the correct prefix list
 
-        import configurator
+
         junos_config(malicious_dns, attack_key)
     else:
         print('No malicious DNS traffic')
@@ -157,17 +142,13 @@ def memcached_db_query(time_ago_var, time_now_var):
     else:
         pass
     # Query DB to return sum of bytes for time period
-    #sum_query_test = client.query(f'SELECT sum(in_bytes) from siem.netflow WHERE (received >= \'2025-07-04 12:20:29\' AND received <= \'2025-07-04 12:24:50\') AND (proto=\'udp\') AND (src_port=53)')
-    sum_query_test = client.query(f'SELECT sum(in_bytes) from siem.netflow WHERE (received >= \'{time_ago_var}\' AND received <= \'{time_now_var}\') AND (proto=\'udp\') AND (src_port=11211)')
+    sum_query_test = client.query(f'SELECT sum(in_bytes) from siem.netflow WHERE (received >= \'{time_ago_var}\''
+                                  f' AND received <= \'{time_now_var}\') AND (proto=\'udp\') AND (src_port=11211)')
     bytes_sum = sum_query_test.result_rows[0]
     bytes_sum = int(bytes_sum[0])
     print(f"DB query function return: {malicious_memcached}, {bytes_sum}, {count_memcached_host}")
     return malicious_memcached, bytes_sum, count_memcached_host
 
-# db_query_result = db_query()
-# print(db_query_result[0])
-#ntp_bytes_received = db_query_result[1]
-#count_ntp_hosts = db_query_result[2]
 
 def memcached_event_gen(time_now_var, memcached_bytes_received, count_memcached_hosts, malicious_memcached):
     if memcached_bytes_received > memcached_bytes_threshold:

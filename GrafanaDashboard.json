@@ -1,0 +1,2025 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 2,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "depgmp54cc83ka"
+      },
+      "description": "Syslog table",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "decimals": 1,
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "SSHD LOGIN FAILED": {
+                  "color": "semi-dark-red",
+                  "index": 1,
+                  "text": "SSHD LOGIN FAILED"
+                },
+                "critical": {
+                  "color": "semi-dark-red",
+                  "index": 0,
+                  "text": "critical"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "level"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "timestamp"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "alias": "*",
+                "custom": false,
+                "name": "*",
+                "type": "String"
+              }
+            ],
+            "database": "siem",
+            "filters": [],
+            "groupBy": [],
+            "limit": 1000,
+            "meta": {},
+            "mode": "list",
+            "orderBy": [
+              {
+                "dir": "DESC",
+                "name": "time"
+              }
+            ],
+            "queryType": "table",
+            "table": "syslog"
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "depgmp54cc83ka"
+          },
+          "editorType": "builder",
+          "format": 1,
+          "pluginVersion": "4.9.0",
+          "rawSql": "SELECT * FROM \"siem\".\"syslog\" ORDER BY time DESC LIMIT 1000",
+          "refId": "A"
+        }
+      ],
+      "title": "Syslog",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "depgmp54cc83ka"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-text",
+              "wrapText": true
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "type"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "applyToRow": false,
+                  "mode": "gradient",
+                  "type": "color-background",
+                  "wrapText": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "alias": "received",
+                "custom": false,
+                "name": "received",
+                "type": "DateTime('Europe/Sofia')"
+              },
+              {
+                "alias": "device",
+                "custom": false,
+                "name": "device",
+                "type": "String"
+              },
+              {
+                "alias": "type",
+                "custom": false,
+                "name": "type",
+                "type": "String"
+              },
+              {
+                "alias": "lvl",
+                "custom": false,
+                "name": "lvl",
+                "type": "String"
+              },
+              {
+                "alias": "action",
+                "custom": false,
+                "name": "action",
+                "type": "String"
+              },
+              {
+                "alias": "msg",
+                "custom": false,
+                "name": "msg",
+                "type": "String"
+              }
+            ],
+            "database": "siem",
+            "filters": [],
+            "groupBy": [],
+            "limit": 10000,
+            "meta": {},
+            "mode": "list",
+            "orderBy": [
+              {
+                "dir": "ASC",
+                "name": "received"
+              }
+            ],
+            "queryType": "table",
+            "table": "events"
+          },
+          "editorType": "builder",
+          "format": 1,
+          "pluginVersion": "4.9.0",
+          "rawSql": "SELECT received, device, type, lvl, action, msg FROM \"siem\".\"events\" ORDER BY received ASC LIMIT 10000",
+          "refId": "A"
+        }
+      ],
+      "title": "Security Events",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "series",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 40,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "Bytes",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 2,
+      "maxDataPoints": 2048,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "timezone": [
+          "Europe/Sofia"
+        ],
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "alias": "received",
+                "hint": "time",
+                "name": "received",
+                "type": "DateTime"
+              }
+            ],
+            "database": "siem",
+            "filters": [
+              {
+                "condition": "AND",
+                "filterType": "custom",
+                "hint": "time",
+                "key": "",
+                "operator": "WITH IN DASHBOARD TIME RANGE",
+                "type": "datetime"
+              }
+            ],
+            "groupBy": [
+              "in_bytes"
+            ],
+            "limit": 10000,
+            "meta": {},
+            "mode": "trend",
+            "orderBy": [
+              {
+                "dir": "DESC",
+                "name": "received"
+              }
+            ],
+            "queryType": "timeseries",
+            "table": "netflow"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "alias": "received",
+                  "hint": "time",
+                  "name": "received",
+                  "type": "DateTime"
+                }
+              ],
+              "database": "siem",
+              "filters": [
+                {
+                  "condition": "AND",
+                  "filterType": "custom",
+                  "hint": "time",
+                  "key": "",
+                  "operator": "WITH IN DASHBOARD TIME RANGE",
+                  "type": "datetime"
+                }
+              ],
+              "groupBy": [
+                "in_bytes"
+              ],
+              "limit": 10000,
+              "meta": {},
+              "mode": "trend",
+              "orderBy": [
+                {
+                  "dir": "DESC",
+                  "name": "received"
+                }
+              ],
+              "queryType": "timeseries",
+              "table": "netflow"
+            }
+          },
+          "pluginVersion": "4.9.0",
+          "queryType": "table",
+          "rawSql": "SELECT $__timeInterval(received) as \"time\", in_bytes FROM \"siem\".\"netflow\" WHERE ( time >= $__fromTime AND time <= $__toTime ) GROUP BY in_bytes, time ORDER BY time DESC LIMIT 10000",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Bytes",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "das"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Source ASN"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Source IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 123
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Destination IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 113
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Destination ASN Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 177
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Destination ASN"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 147
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Bytes"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "alias": "dst_asn",
+                "custom": false,
+                "name": "dst_asn",
+                "type": "UInt16"
+              },
+              {
+                "alias": "dst4_addr",
+                "custom": false,
+                "name": "dst4_addr",
+                "type": "Nullable(IPv4)"
+              },
+              {
+                "alias": "dst_asn_org",
+                "custom": false,
+                "name": "dst_asn_org",
+                "type": "String"
+              },
+              {
+                "alias": "in_bytes",
+                "custom": false,
+                "name": "in_bytes",
+                "type": "UInt64"
+              }
+            ],
+            "database": "siem",
+            "filters": [],
+            "groupBy": [],
+            "limit": 1000,
+            "meta": {},
+            "mode": "list",
+            "orderBy": [
+              {
+                "dir": "ASC",
+                "name": "dst4_addr"
+              }
+            ],
+            "queryType": "table",
+            "table": "netflow"
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "ae96xk5hkzy80f"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "alias": "dst_asn",
+                  "custom": false,
+                  "name": "dst_asn",
+                  "type": "UInt16"
+                },
+                {
+                  "alias": "dst4_addr",
+                  "custom": false,
+                  "name": "dst4_addr",
+                  "type": "Nullable(IPv4)"
+                },
+                {
+                  "alias": "dst_asn_org",
+                  "custom": false,
+                  "name": "dst_asn_org",
+                  "type": "String"
+                },
+                {
+                  "alias": "in_bytes",
+                  "custom": false,
+                  "name": "in_bytes",
+                  "type": "UInt64"
+                }
+              ],
+              "database": "siem",
+              "filters": [],
+              "groupBy": [],
+              "limit": 1000,
+              "meta": {},
+              "mode": "list",
+              "orderBy": [
+                {
+                  "dir": "ASC",
+                  "name": "dst4_addr"
+                }
+              ],
+              "queryType": "table",
+              "table": "netflow"
+            }
+          },
+          "pluginVersion": "4.9.0",
+          "queryType": "table",
+          "rawSql": "SELECT dst_asn, dst_asn_org, in_bytes FROM siem.netflow ORDER BY in_bytes DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Traffic Distribution by DST ASN",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "as_dst_name": "Destination ASN Name",
+              "as_src_name": "Source ASN Name ",
+              "da": "Destination IP",
+              "das": "Destination ASN",
+              "dst_asn": "DST ASN",
+              "dst_asn_org": "Organisation",
+              "ibyt": "Bytes",
+              "in_bytes": "Bytes input",
+              "sa": "Source IP",
+              "sas": "Source ASN"
+            }
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "Bytes input": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "DST ASN": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination ASN": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination ASN Name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Organisation": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source ASN": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source ASN Name ": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst ASN": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst4_addr": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst_asn": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst_asn_org": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "in_bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "das"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Source ASN"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Source IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 123
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Destination IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 113
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Destination ASN Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 177
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Destination ASN"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 147
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Bytes"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "alias": "dst_asn",
+                "custom": false,
+                "name": "dst_asn",
+                "type": "UInt16"
+              },
+              {
+                "alias": "dst4_addr",
+                "custom": false,
+                "name": "dst4_addr",
+                "type": "Nullable(IPv4)"
+              },
+              {
+                "alias": "dst_asn_org",
+                "custom": false,
+                "name": "dst_asn_org",
+                "type": "String"
+              },
+              {
+                "alias": "in_bytes",
+                "custom": false,
+                "name": "in_bytes",
+                "type": "UInt64"
+              }
+            ],
+            "database": "siem",
+            "filters": [],
+            "groupBy": [],
+            "limit": 1000,
+            "meta": {},
+            "mode": "list",
+            "orderBy": [
+              {
+                "dir": "ASC",
+                "name": "dst4_addr"
+              }
+            ],
+            "queryType": "table",
+            "table": "netflow"
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "ae96xk5hkzy80f"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "alias": "dst_asn",
+                  "custom": false,
+                  "name": "dst_asn",
+                  "type": "UInt16"
+                },
+                {
+                  "alias": "dst4_addr",
+                  "custom": false,
+                  "name": "dst4_addr",
+                  "type": "Nullable(IPv4)"
+                },
+                {
+                  "alias": "dst_asn_org",
+                  "custom": false,
+                  "name": "dst_asn_org",
+                  "type": "String"
+                },
+                {
+                  "alias": "in_bytes",
+                  "custom": false,
+                  "name": "in_bytes",
+                  "type": "UInt64"
+                }
+              ],
+              "database": "siem",
+              "filters": [],
+              "groupBy": [],
+              "limit": 1000,
+              "meta": {},
+              "mode": "list",
+              "orderBy": [
+                {
+                  "dir": "ASC",
+                  "name": "dst4_addr"
+                }
+              ],
+              "queryType": "table",
+              "table": "netflow"
+            }
+          },
+          "pluginVersion": "4.9.0",
+          "queryType": "table",
+          "rawSql": "SELECT src_asn, src_asn_org, in_bytes FROM siem.netflow ORDER BY in_bytes DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Traffic Distribution by SRC ASN",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "as_dst_name": "Destination ASN Name",
+              "as_src_name": "Source ASN Name ",
+              "da": "Destination IP",
+              "das": "Destination ASN",
+              "dst_asn": "DST ASN",
+              "dst_asn_org": "Organisation",
+              "ibyt": "Bytes",
+              "in_bytes": "Bytes input",
+              "sa": "Source IP",
+              "sas": "Source ASN",
+              "src_asn": "SRC ASN",
+              "src_asn_org": "Organisation"
+            }
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "Bytes input": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "DST ASN": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination ASN": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination ASN Name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Organisation": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "SRC ASN": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source ASN": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source ASN Name ": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst ASN": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst4_addr": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst_asn": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst_asn_org": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "in_bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 33
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Bytes (sum)"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "alias": "proto",
+                "custom": false,
+                "name": "proto",
+                "type": "String"
+              },
+              {
+                "alias": "dst_port",
+                "custom": false,
+                "name": "dst_port",
+                "type": "UInt16"
+              },
+              {
+                "alias": "dst4_addr",
+                "custom": false,
+                "name": "dst4_addr",
+                "type": "Nullable(IPv4)"
+              }
+            ],
+            "database": "siem",
+            "filters": [],
+            "groupBy": [],
+            "limit": 1000,
+            "meta": {},
+            "mode": "list",
+            "orderBy": [],
+            "queryType": "table",
+            "table": "netflow"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "alias": "proto",
+                  "custom": false,
+                  "name": "proto",
+                  "type": "String"
+                },
+                {
+                  "alias": "dst_port",
+                  "custom": false,
+                  "name": "dst_port",
+                  "type": "UInt16"
+                },
+                {
+                  "alias": "dst4_addr",
+                  "custom": false,
+                  "name": "dst4_addr",
+                  "type": "Nullable(IPv4)"
+                }
+              ],
+              "database": "siem",
+              "filters": [],
+              "groupBy": [],
+              "limit": 1000,
+              "meta": {},
+              "mode": "list",
+              "orderBy": [],
+              "queryType": "table",
+              "table": "netflow"
+            }
+          },
+          "pluginVersion": "4.9.0",
+          "queryType": "table",
+          "rawSql": "SELECT received AS time, proto, dst_port, dst4_addr FROM \"siem\".\"netflow\" where proto='tcp' ORDER BY time",
+          "refId": "A"
+        }
+      ],
+      "title": "TCP destination port by IP  ",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "da": "Destination IP",
+              "dp": "Destination port",
+              "dst4_addr": "Destination IP",
+              "dst_port": "Destination port",
+              "proto": "Protocol",
+              "sum(ibyt)": "Bytes"
+            }
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "Destination IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination port": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Protocol": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst_port": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "depgmp54cc83ka"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 33
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "proto"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [
+              {
+                "aggregateType": "count",
+                "column": ""
+              }
+            ],
+            "columns": [
+              {
+                "alias": "dp",
+                "custom": false,
+                "name": "dp",
+                "type": "UInt16"
+              },
+              {
+                "alias": "da",
+                "custom": false,
+                "name": "da",
+                "type": "Nullable(IPv4)"
+              }
+            ],
+            "database": "netflow",
+            "filters": [],
+            "groupBy": [],
+            "limit": 0,
+            "meta": {},
+            "mode": "aggregate",
+            "orderBy": [],
+            "queryType": "table",
+            "table": "flowdata"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": true,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [
+                {
+                  "aggregateType": "count",
+                  "column": ""
+                }
+              ],
+              "columns": [
+                {
+                  "alias": "dp",
+                  "custom": false,
+                  "name": "dp",
+                  "type": "UInt16"
+                },
+                {
+                  "alias": "da",
+                  "custom": false,
+                  "name": "da",
+                  "type": "Nullable(IPv4)"
+                }
+              ],
+              "database": "netflow",
+              "filters": [],
+              "groupBy": [],
+              "limit": 0,
+              "meta": {},
+              "mode": "aggregate",
+              "orderBy": [],
+              "queryType": "table",
+              "table": "flowdata"
+            }
+          },
+          "pluginVersion": "4.9.0",
+          "queryType": "table",
+          "rawSql": "select src_port, src4_addr, sum(in_bytes)  FROM siem.netflow WHERE ( first >= $__fromTime AND first <= $__toTime ) AND proto='tcp' GROUP BY src_port, src4_addr",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "depgmp54cc83ka"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.9.0",
+          "queryType": "table",
+          "rawSql": "SELECT proto, src_port, src4_addr, in_bytes FROM \"siem\".\"netflow\" where proto='tcp'",
+          "refId": "B"
+        }
+      ],
+      "title": "TCP source port by IP",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "in_bytes": false,
+              "proto": false,
+              "src4_addr": false,
+              "src_port": false
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "da": "Destination IP",
+              "dp": "Destination port",
+              "in_bytes": "Bytes",
+              "proto": "Protocol",
+              "sa": "Source IP",
+              "sp": "Source port",
+              "src4_addr": "Source IP",
+              "src_port": "Source Port",
+              "sum(ibyt)": "Bytes"
+            }
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "Destination IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination port": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source port": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "in_bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "proto": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "src4_addr": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "src_port": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "depgmp54cc83ka"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "color-text",
+              "wrapText": false
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 41
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Bytes (sum)"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "columns": [],
+            "database": "netflow",
+            "limit": 1000,
+            "meta": {},
+            "mode": "list",
+            "queryType": "table",
+            "table": "flowdata"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "netflow",
+              "limit": 1000,
+              "meta": {},
+              "mode": "list",
+              "queryType": "table",
+              "table": "flowdata"
+            }
+          },
+          "pluginVersion": "4.9.0",
+          "queryType": "table",
+          "rawSql": "select dst_port, dst4_addr, sum(in_bytes) FROM siem.netflow WHERE proto='udp' AND dst_port >= 0 GROUP BY dst_port, dst4_addr",
+          "refId": "A"
+        }
+      ],
+      "title": "UDP DST",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "da": "Destination IP",
+              "dp": "Destination Port",
+              "sum(ibyt)": "Bytes"
+            }
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "Destination IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination Port": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst4_addr": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "dst_port": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "sum(in_bytes)": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "color-text",
+              "wrapText": false
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 41
+      },
+      "id": 5,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time received"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "columns": [],
+            "database": "netflow",
+            "limit": 1000,
+            "meta": {},
+            "mode": "list",
+            "queryType": "table",
+            "table": "flowdata"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "netflow",
+              "limit": 1000,
+              "meta": {},
+              "mode": "list",
+              "queryType": "table",
+              "table": "flowdata"
+            }
+          },
+          "pluginVersion": "4.9.0",
+          "queryType": "table",
+          "rawSql": "select received as time, src_port, src4_addr, sum(in_bytes) FROM siem.netflow WHERE proto='udp' AND src_port >= 0 GROUP BY time, src_port, src4_addr ORDER BY time DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "UDP traffic by source IP",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "da": "Destination IP",
+              "dp": "Destination Port",
+              "sa": "Source IP",
+              "sp": "Source Port",
+              "src4_addr": "SRC IP",
+              "src_port": "SRC PORT",
+              "sum(ibyt)": "Bytes",
+              "sum(in_bytes)": "Bytes received",
+              "time": "Time received"
+            }
+          }
+        },
+        {
+          "disabled": true,
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "Destination IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Destination Port": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Source Port": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "sa": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "sp": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "depgmp54cc83ka"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "tcp": {
+                  "index": 0,
+                  "text": "TCP"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 49
+      },
+      "id": 3,
+      "options": {
+        "displayLabels": [
+          "name"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/.*/",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "alias": "proto",
+                "custom": false,
+                "name": "proto",
+                "type": "String"
+              }
+            ],
+            "database": "siem",
+            "filters": [],
+            "groupBy": [
+              "in_bytes",
+              "proto"
+            ],
+            "limit": 0,
+            "meta": {},
+            "mode": "aggregate",
+            "orderBy": [],
+            "queryType": "table",
+            "table": "netflow"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "alias": "proto",
+                  "custom": false,
+                  "name": "proto",
+                  "type": "String"
+                }
+              ],
+              "database": "siem",
+              "filters": [],
+              "groupBy": [
+                "in_bytes",
+                "proto"
+              ],
+              "limit": 0,
+              "meta": {},
+              "mode": "aggregate",
+              "orderBy": [],
+              "queryType": "table",
+              "table": "netflow"
+            }
+          },
+          "pluginVersion": "4.9.0",
+          "queryType": "table",
+          "rawSql": "SELECT sum(in_bytes), proto FROM \"siem\".\"netflow\" GROUP BY proto LIMIT 10000",
+          "refId": "A"
+        }
+      ],
+      "title": "Protocol Distribution",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "proto": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "sum(in_bytes)": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
+      "type": "piechart"
+    }
+  ],
+  "preload": false,
+  "refresh": "5m",
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "Europe/Sofia",
+  "title": "Netflow",
+  "uid": "be9oxkq2ok6wwe",
+  "version": 49,
+  "weekStart": "monday"
+}

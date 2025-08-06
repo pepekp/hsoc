@@ -1,5 +1,5 @@
 """
-Syslog server 
+Syslog server
 """
 import logging
 import logging.handlers

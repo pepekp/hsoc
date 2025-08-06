@@ -5,15 +5,13 @@ from datetime import datetime
 import subprocess
 from json import JSONDecoder, JSONDecodeError
 import clickhouse_driver
+import ipaddress
 import geoip2.database
 from geoip2.errors import AddressNotFoundError
-import ipaddress
-from pathlib import Path
-from directory_path import  netflow_home_dir, app_logs_directory, flows_dir
-# Create directory path
-#flows_directory = Path(__file__).parent / 'netflow/flows'
-print(f'Pars to db: {flows_dir}')
 
+from directory_path import  netflow_home_dir, app_logs_directory, flows_dir
+
+print(f'Pars to db: {flows_dir}')
 
 def find_last_created_file() -> str:
     netflow_dir_name = flows_dir
@@ -23,19 +21,10 @@ def find_last_created_file() -> str:
     filelist = [i for i in files if 'current' not in i]
     file_name = filelist[0].split('/')
     last_file_in_dir = file_name[-1]
-    #print(last_file_in_dir)
     return last_file_in_dir
-
-# last_created_netflow_file = find_last_created_file()
-
 
 def nfdumper(last_created_netflow_file):
     print(f'Netflow file: {last_created_netflow_file}')
-    # netflow_dir_name = netflow_dir_path
-    # files_path = os.path.join(netflow_dir_name)
-    # netflow_home_dir = '/home/pepe/PycharmProjects/siem/netflow'
-    # home_dir_path = os.path.join(netflow_home_dir)
-    # command = f'nfdump -r {files_path}/{last_created_netflow_file} -o json'
     command = f'nfdump -r {flows_dir}/{last_created_netflow_file} -o json'
     result = subprocess.check_output(command, shell=True, text=True)
     try:
@@ -61,6 +50,7 @@ def nfdumper(last_created_netflow_file):
             in_packets = item['in_packets']
             in_bytes = item['in_bytes']
             proto = item['proto']
+
             # Protocol Numbers to string
             proto_dict = {'icmp': 1, 'igmp': 2, 'tcp': 6, 'udp': 17}
             protocol_str = [k for k, v in proto_dict.items() if v == proto]
@@ -89,6 +79,7 @@ def nfdumper(last_created_netflow_file):
             is_priv_dstip = ipaddress.ip_address(dst4_addr).is_private
             is_multicat_srcip = ipaddress.ip_address(src4_addr).is_multicast
             is_multicat_dstip = ipaddress.ip_address(dst4_addr).is_multicast
+
             # Get ASN of the IP address
             if (is_priv_srcip or is_multicat_srcip) is not True:
                 try:
@@ -159,14 +150,11 @@ def nfdumper(last_created_netflow_file):
             # print(query)
             conn = clickhouse_driver.Client(host='172.18.0.2', port=9000)
             conn.execute(query)
-            #print('DB load completed')
+            print('DB load completed')
     except JSONDecodeError as e:
         print(f'No JSON output: {e}')
         pass
 
-# if __name__ == "__main__":
-#     last_created_netflow_file = find_last_created_file()
-#     nfdumper()
 
 
 
