@@ -23,6 +23,7 @@ import clickhouse_driver
 import clickhouse_connect
 import ipaddress
 from configurator.junos_configurator import junos_config
+from configurator.junos_configurator import napalm_junos_config
 
 
 # Define whitehost addresses, always add 0.0.0.0 address for safety
@@ -34,14 +35,14 @@ memcached_whitelist = ['0.0.0.0']
 client = clickhouse_connect.get_client(host='172.18.0.2', port=8123, username='default', password='', database='siem', apply_server_timezone=True)
 
 # Threshold to trigger security event
-ntp_bytes_threshold = 200
-dns_bytes_threshold = 200
+ntp_bytes_threshold = 500
+dns_bytes_threshold = 500
 memcached_bytes_threshold = 500
 
 def time_period():
     time_now = datetime.now()
     # Define period ago with timedelta
-    time_delta = timedelta(minutes=10)
+    time_delta = timedelta(minutes=5)
     time_ago = time_now - time_delta
     ta = time_ago.strftime("%Y-%m-%d %H:%M:%S")
     tn = time_now.strftime("%Y-%m-%d %H:%M:%S")
@@ -120,7 +121,7 @@ def dns_db_query(time_ago_var, time_now_var):
     else:
         pass
     # Query DB to return sum of bytes for time period
-    #sum_query_test = client.query(f'SELECT sum(in_bytes) from siem.netflow WHERE (received >= \'2025-07-04 12:20:29\' AND received <= \'2025-07-04 12:24:50\') AND (proto=\'udp\') AND (src_port=53)')
+
     sum_query_test = client.query(f'SELECT sum(in_bytes) from siem.netflow WHERE (received >= \'{time_ago_var}\' AND received <= \'{time_now_var}\') AND (proto=\'udp\') AND (src_port=53)')
     bytes_sum = sum_query_test.result_rows[0]
     #print(type(bytes_sum))
@@ -196,11 +197,7 @@ def memcached_event_gen(time_now_var, memcached_bytes_received, count_memcached_
         attack_key = 3
         # Call configurator to push configuration
         import configurator
-        junos_config(malicious_memcached, attack_key)
+        napalm_junos_config(malicious_memcached, attack_key)
     else:
         print('No malicious Memcached traffic')
 
-
-def j_ntp_config():
-    print('here will configure network device')
-#j_ntp_config()

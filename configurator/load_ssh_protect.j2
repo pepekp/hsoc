@@ -1,0 +1,7 @@
+policy-options {
+    prefix-list ssh {
+        {% for line in ip -%}
+        {{ line }};
+        {% endfor -%}
+    }
+}

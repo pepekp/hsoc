@@ -1,17 +1,13 @@
 import os
 import threading
 import time
-
-#from detectors.ntp_ddos import time_period
-#from network_fingerprint import fingerprint
 import subprocess
 import multiprocessing
 import schedule
 from schedule import every, repeat, run_pending
 from netflow import netflow_pars_to_db
 from sysloging import syslog_srv_v1
-#from detectors import ntp_ddos
-from detectors import ddos
+from detectors import ddos, syslog_detector
 
 def netflow():
     print("Starting netflow collector...")
@@ -55,10 +51,14 @@ def syslog_parser():
 @repeat(every(5).minutes)
 def event_detector():
     print('Start Event detector...')
-    #ntp_ddos.time_period()
     time_vars = ddos.time_period()
     time_ago_var = time_vars[0]
     time_now_var = time_vars[1]
+
+    # Syslog SSH
+
+    syslog_detector.fail_login_detector(time_ago_var, time_now_var)
+    #syslog_detector.fail_login_detector()
 
     # NTP DDoS
     db_query_result = ddos.ntp_db_query(time_ago_var, time_now_var)
@@ -80,6 +80,8 @@ def event_detector():
     memcached_bytes_received = memcached_db_query_result[1]
     count_memcached_hosts = memcached_db_query_result[2]
     ddos.memcached_event_gen(time_now_var, memcached_bytes_received, count_memcached_hosts, malicious_memcached)
+
+
     print('End Event detector...')
 
 def sched():

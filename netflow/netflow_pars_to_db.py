@@ -19,12 +19,11 @@ def find_last_created_file() -> str:
     netflow_dir_name = flows_dir
     files_path = os.path.join(netflow_dir_name, '*')
     files = sorted(glob.iglob(files_path), key=os.path.getctime, reverse=True)
-    print(files)
     # remove temp nfcapd file
     filelist = [i for i in files if 'current' not in i]
     file_name = filelist[0].split('/')
     last_file_in_dir = file_name[-1]
-    print(last_file_in_dir)
+    #print(last_file_in_dir)
     return last_file_in_dir
 
 # last_created_netflow_file = find_last_created_file()
@@ -165,11 +164,9 @@ def nfdumper(last_created_netflow_file):
         print(f'No JSON output: {e}')
         pass
 
-
 # if __name__ == "__main__":
 #     last_created_netflow_file = find_last_created_file()
 #     nfdumper()
 
-# ======================================================
 
 
