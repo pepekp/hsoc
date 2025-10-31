@@ -1,0 +1,28 @@
+---
+device_ip:
+  - '192.168.0.101'
+database_ip: '172.18.0.2'
+# ddos_whitelist
+ntp_whitelist:
+  - '0.0.0.0'
+  - '77.236.182.128'
+  - '8.120.162.35'
+  - '91.2 10.88.37'
+  - '162.159.200.123'
+  - '120.25.112.107'
+dns_whitelist:
+  - '0.0.0.0'
+  - '8.8.8.8'
+  - '8.8.4.4'
+memcached_whitelist:
+  - '0.0.0.0'
+  - '1.1.1.1'
+# arp_detector
+mac_whitelist:
+  - '70:4f:57:6c:d2:c8'
+  - '70:4f:57:6c:d2:e9'
+# syslog_detector
+user_whitelist:
+  - 'admin'
+  - 'root'
+
