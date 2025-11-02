@@ -1,24 +1,36 @@
 import os
 import threading
 import time
+import yaml
 import subprocess
 import multiprocessing
 import schedule
 from schedule import every, repeat, run_pending
 from netflow import netflow_pars_to_db
 from sysloging import syslog_srv_v1
-from detectors import ddos, syslog_detector
+from detectors import ddos, syslog_detector, arp_table_detector
+
+# Read app configuration parameters from config.yamal
+def config():
+    with open('config.yaml', 'r') as yf:
+        data = yaml.full_load(yf)
+        device_ip = data.get('device_ip')
+        database_ip = data.get('database_ip')
+        ntp_whitelist = data.get('ntp_whitelist')
+        dns_whitelist = data.get('dns_whitelist')
+        memcached_whitelist = data.get('memcached_whitelist')
+        mac_whitelist = data.get('mac_whitelist')
+        user_whitelist = data.get('user_whitelist')
+    yf.close()
+    return device_ip, database_ip, ntp_whitelist, dns_whitelist, memcached_whitelist, mac_whitelist, user_whitelist
+
 
 def netflow():
     print("Starting netflow collector...")
     run_nfcapd = 'nfcapd -p 2055 -t 300 -w ./netflow/flows/'
     try:
         print('Run Nfcapd')
-        #nfc = subprocess.Popen(run_nfcapd, shell=True, stdout=subprocess.PIPE)
         nfc = subprocess.Popen(run_nfcapd, shell=True, stdout=subprocess.PIPE)
-        #os.system(command=run_nfcapd)
-        #netflow_pars_to_db.find_last_created_file().main()
-        #netflow_pars_to_db.nfdumper()
         print(nfc.pid)
     except (IOError, SystemExit) as f:
         print(f"Error starting netflow collector: {f}")
@@ -56,10 +68,13 @@ def event_detector():
     time_now_var = time_vars[1]
 
     # Syslog SSH
-
     syslog_detector.fail_login_detector(time_ago_var, time_now_var)
     #syslog_detector.fail_login_detector()
 
+    # ARP detector
+    print('Start ARP cache detector...')
+    arp_table_detector.get_arp_cache()
+    print('ARP cache detector completed')
     # NTP DDoS
     db_query_result = ddos.ntp_db_query(time_ago_var, time_now_var)
     malicious_ntp =  db_query_result[0]
