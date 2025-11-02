@@ -47,4 +47,4 @@ def get_arp_cache():
     else:
         pass
 
-get_arp_cache()
+#get_arp_cache()
