@@ -1,0 +1,25 @@
+# Environments
+.idea/
+.env
+.envrc
+.venv
+.cfg
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+
+app_logs/*.log
+sysloging/syslogs/*.log
+configurator/.env
+
+sysloging/__pycache__/
+detectors/__pycache__/
+configurator/__pycache__/
+network_fingerprint/__pycache__/
+network_fingerprint/*.xml
+
+/netflow/nfcapd.*
+/netflow/flows/nfcapd.*
