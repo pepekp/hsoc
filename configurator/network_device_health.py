@@ -40,21 +40,21 @@ def chassis_routing_engine():
 
     show_re_json = json.loads(show_re)
     for item in show_re_json:
-        temperature = item['temperature_c']
-        cpu_user = item['cpu_user']
-        cpu_kernel = item['cpu_kernel']
-        cpu_idle = item['cpu_idle']
+        temperature = int(item['temperature_c'])
+        cpu_user = int(item['cpu_user'])
+        cpu_kernel = int(item['cpu_kernel'])
+        cpu_idle = int(item['cpu_idle'])
         model = item['model']
         uptime = item['uptime']
-        load_average_one = item['load_average_one']
-        load_average_five = item['load_average_five']
-        load_average_fifteen = item['load_average_fifteen']
+        load_average_one = float(item['load_average_one'])
+        load_average_five = float(item['load_average_five'])
+        load_average_fifteen = float(item['load_average_fifteen'])
 
         return temperature, cpu_user, cpu_kernel, cpu_idle, model, uptime, load_average_one, load_average_five, load_average_fifteen
     dev.disconnect()
 
 chassis_re = chassis_routing_engine()
-
+print(chassis_re)
 def ping_probe():
     ping = 'ping 8.8.8.8 count 5 do-not-fragment size 1420 rapid'
 
@@ -151,7 +151,7 @@ def show_op_table():
                           f' tx err fifo: {tx_err_fifo[1]}\n tx err resource: {tx_err_resource[1]}')
 
 
-show_op_table()
+#show_op_table()
 
 # Insert device statistics into database
 def db_insert():

@@ -22,4 +22,3 @@ def get_juniper_config():
         with open(f'srx_backup_{db_today_str}.cfg', 'wb') as f:
             f.write(cfg_xml)
         f.close()
-get_juniper_config()
