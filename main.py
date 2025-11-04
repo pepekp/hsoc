@@ -10,7 +10,7 @@ from netflow import netflow_pars_to_db
 from sysloging import syslog_srv_v1
 from detectors import ddos, syslog_detector, arp_table_detector
 
-# Read app configuration parameters from config.yamal
+# Read app configuration parameters from config.yaml
 def config():
     with open('config.yaml', 'r') as yf:
         data = yaml.full_load(yf)
@@ -24,6 +24,10 @@ def config():
     yf.close()
     return device_ip, database_ip, ntp_whitelist, dns_whitelist, memcached_whitelist, mac_whitelist, user_whitelist
 
+database_ip = config()[1]
+mac_whitelist = config()[5]
+print(mac_whitelist)
+print(database_ip)
 
 def netflow():
     print("Starting netflow collector...")
@@ -48,7 +52,7 @@ def syslog():
 def netflow_parser():
     print('Start netflow parser...')
     last_created_netflow_file = netflow_pars_to_db.find_last_created_file()
-    netflow_pars_to_db.nfdumper(last_created_netflow_file)
+    netflow_pars_to_db.nfdumper(last_created_netflow_file, database_ip)
     time.sleep(5)
     print('Netflow parser competed')
 
@@ -73,22 +77,25 @@ def event_detector():
 
     # ARP detector
     print('Start ARP cache detector...')
-    arp_table_detector.get_arp_cache()
+    arp_table_detector.get_arp_cache(database_ip, mac_whitelist)
     print('ARP cache detector completed')
+
     # NTP DDoS
+    print('Start NTP DDoS detector...')
     db_query_result = ddos.ntp_db_query(time_ago_var, time_now_var)
     malicious_ntp =  db_query_result[0]
     ntp_bytes_received = db_query_result[1]
     count_ntp_hosts = db_query_result[2]
     ddos.ntp_event_gen(time_now_var, ntp_bytes_received, count_ntp_hosts, malicious_ntp)
-
+    print('NTP DDoS detector completed')
     # DNS DDoS
+    print('Start DNS DDoS detector...')
     dns_db_query_result = ddos.dns_db_query(time_ago_var, time_now_var)
     malicious_dns = dns_db_query_result[0]
     dns_bytes_received = dns_db_query_result[1]
     count_dns_hosts = dns_db_query_result[2]
     ddos.dns_event_gen(time_now_var, dns_bytes_received, count_dns_hosts, malicious_dns)
-
+    print('DNS DDoS detector completed')
     # Memcached DDoS
     memcached_db_query_result = ddos.memcached_db_query(time_ago_var, time_now_var)
     malicious_memcached = memcached_db_query_result[0]
@@ -98,6 +105,23 @@ def event_detector():
 
 
     print('End Event detector...')
+
+@repeat(every(5).minutes)
+def syslog_parser():
+    print('Start Device health status...')
+    from configurator import network_device_health
+    network_device_health.chassis_routing_engine()
+    network_device_health.ping_probe()
+    network_device_health.show_op_table()
+    network_device_health.db_insert()
+    print('Device health status has been completed')
+
+@repeat(every(30).minutes)
+def syslog_parser():
+    print('Start Device backup...')
+    from configurator import network_device_backup
+    network_device_backup.get_juniper_config()
+    print('Device backup has been completed')
 
 def sched():
     #schedule.every(5).minutes.do(netflow_parser)
