@@ -14,6 +14,7 @@ venv.bak/
 app_logs/*.log
 sysloging/syslogs/*.log
 configurator/.env
+device_backup/*.cfg
 
 sysloging/__pycache__/
 detectors/__pycache__/

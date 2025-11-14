@@ -19,6 +19,6 @@ def get_juniper_config():
         data = dev.rpc.get_config(options={'format':'text'})
         print(etree.tostring(data, encoding='unicode', pretty_print=True))
         cfg_xml = etree.tostring(data)
-        with open(f'srx_backup_{db_today_str}.cfg', 'wb') as f:
+        with open(f'device_backup/srx_backup_{db_today_str}.cfg', 'wb') as f:
             f.write(cfg_xml)
         f.close()

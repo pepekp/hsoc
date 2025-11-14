@@ -9,25 +9,32 @@ from schedule import every, repeat, run_pending
 from netflow import netflow_pars_to_db
 from sysloging import syslog_srv_v1
 from detectors import ddos, syslog_detector, arp_table_detector
+from configurator.network_device_health import device_connector
+from configurator.network_device_health import chassis_routing_engine
+from configurator.network_device_health import ping_probe
+from configurator.network_device_health import db_insert
+from get_time import get_time
+date_time = get_time()
+db_date_time = date_time[1]
+
 
 # Read app configuration parameters from config.yaml
 def config():
     with open('config.yaml', 'r') as yf:
         data = yaml.full_load(yf)
         device_ip = data.get('device_ip')
-        database_ip = data.get('database_ip')
+        database_ipaddr = data.get('database_ip')
         ntp_whitelist = data.get('ntp_whitelist')
         dns_whitelist = data.get('dns_whitelist')
         memcached_whitelist = data.get('memcached_whitelist')
-        mac_whitelist = data.get('mac_whitelist')
+        macaddr_whitelist = data.get('mac_whitelist')
         user_whitelist = data.get('user_whitelist')
     yf.close()
-    return device_ip, database_ip, ntp_whitelist, dns_whitelist, memcached_whitelist, mac_whitelist, user_whitelist
+    return device_ip, database_ipaddr, ntp_whitelist, dns_whitelist, memcached_whitelist, macaddr_whitelist, user_whitelist
 
 database_ip = config()[1]
 mac_whitelist = config()[5]
-print(mac_whitelist)
-print(database_ip)
+users_whitelist = config()[6]
 
 def netflow():
     print("Starting netflow collector...")
@@ -71,8 +78,8 @@ def event_detector():
     time_ago_var = time_vars[0]
     time_now_var = time_vars[1]
 
-    # Syslog SSH
-    syslog_detector.fail_login_detector(time_ago_var, time_now_var)
+    # Syslog block SSH login attempts
+    syslog_detector.fail_login_detector(time_ago_var, time_now_var, database_ip, users_whitelist)
     #syslog_detector.fail_login_detector()
 
     # ARP detector
@@ -83,7 +90,7 @@ def event_detector():
     # NTP DDoS
     print('Start NTP DDoS detector...')
     db_query_result = ddos.ntp_db_query(time_ago_var, time_now_var)
-    malicious_ntp =  db_query_result[0]
+    malicious_ntp = db_query_result[0]
     ntp_bytes_received = db_query_result[1]
     count_ntp_hosts = db_query_result[2]
     ddos.ntp_event_gen(time_now_var, ntp_bytes_received, count_ntp_hosts, malicious_ntp)
@@ -106,18 +113,25 @@ def event_detector():
 
     print('End Event detector...')
 
-@repeat(every(5).minutes)
-def syslog_parser():
-    print('Start Device health status...')
-    from configurator import network_device_health
-    network_device_health.chassis_routing_engine()
-    network_device_health.ping_probe()
-    network_device_health.show_op_table()
-    network_device_health.db_insert()
-    print('Device health status has been completed')
+# @repeat(every(5).minutes)
+# def device_health():
+#     print('Start Device health status...')
+#     chassis_output = device_connector()[0]
+#     ping_test = device_connector()[1]
+#     chassis_re = chassis_routing_engine(chassis_output)
+#     print(chassis_re)
+#     ping_result = ping_probe(ping_test)
+#     print(ping_result)
+#     # network_device_health.show_op_table()
+#     db_insert(database_ip, chassis_re, ping_result)
+#     print('Device health status has been completed')
+# @repeat(every(5).minutes)
+# def device_health():
+#     from configurator.network_health import chassis_routing_engine
+#     chassis_routing_engine()
 
-@repeat(every(30).minutes)
-def syslog_parser():
+@repeat(every(420).minutes)
+def device_backup():
     print('Start Device backup...')
     from configurator import network_device_backup
     network_device_backup.get_juniper_config()

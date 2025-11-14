@@ -12,10 +12,10 @@ from get_time import get_time
 date_time = get_time()
 db_date_time = date_time[1]
 
-def get_arp_cache():
-    client = clickhouse_connect.get_client(host='172.18.0.2', port=8123, username='default', password='',
+def get_arp_cache(database_ip, mac_whitelist):
+    client = clickhouse_connect.get_client(host=database_ip, port=8123, username='default', password='',
                                            database='siem', apply_server_timezone=True)
-    mac_whitelist = ['70:4f:57:6c:d2:c8', '70:4f:57:6c:d2:e9']
+    # mac_whitelist = ['70:4f:57:6c:dd:cc', '70:4f:57:5c:dd:ee']
     mac_table = []
     load_dotenv()
     host = os.environ.get('HOSTNAME')
@@ -27,7 +27,8 @@ def get_arp_cache():
     output = dev.send_command('show arp no-resolve', use_textfsm=True)
     sh_arp = json.dumps(output, indent=4)
     sh_arp_json = json.loads(sh_arp)
-
+    # print(type(sh_arp_json), sh_arp_json)
+    dev.disconnect()
     for item in sh_arp_json:
         mac = item['mac_address']
         # Create list of mac addresses
